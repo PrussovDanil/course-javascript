@@ -16,23 +16,23 @@
    isAllTrue([1, 2, 3, 4, 5], n => n < 10) // вернет true
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
-   function isAllTrue(array, fn) {
-    if (typeof fn !== 'function') {
-      throw new Error('fn is not a function');
-    }
-  
-    if (!Array.isArray(array) || !array.length) {
-      throw new Error('empty array');
-    }
-  
-    for (const el of array) {
-      if (!fn(el)) {
-        return false;
-      }
-    }
-  
-    return true;
+function isAllTrue(array, fn) {
+  if (typeof fn !== 'function') {
+    throw new Error('fn is not a function');
   }
+
+  if (!Array.isArray(array) || !array.length) {
+    throw new Error('empty array');
+  }
+
+  for (const el of array) {
+    if (!fn(el)) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /*
  Задание 2:
@@ -50,23 +50,23 @@
    isSomeTrue([1, 2, 30, 4, 5], n => n > 20) // вернет true
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
-   function isSomeTrue(array, fn) {
-    if (typeof fn !== 'function') {
-      throw new Error('fn is not a function');
-    }
-  
-    if (!Array.isArray(array) || !array.length) {
-      throw new Error('empty array');
-    }
-  
-    for (const el of array) {
-      if (fn(el)) {
-        return true;
-      }
-    }
-  
-    return false;
+function isSomeTrue(array, fn) {
+  if (typeof fn !== 'function') {
+    throw new Error('fn is not a function');
   }
+
+  if (!Array.isArray(array) || !array.length) {
+    throw new Error('empty array');
+  }
+
+  for (const el of array) {
+    if (fn(el)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 /*
  Задание 3:
@@ -86,12 +86,11 @@ function returnBadArguments(fn, ...args) {
 
   const macz = [];
   for (const key of args) {
-    try{
-      fn(arg);
-    }catch{
-      macz.push(arg)
+    try {
+      fn(key);
+    } catch {
+      macz.push(key);
     }
-    
   }
   return macz;
 }
@@ -113,54 +112,54 @@ function returnBadArguments(fn, ...args) {
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
  */
-   function calculator(number = 0) {
-    if (!Number.isFinite(number)) {
-      throw new Error('number is not a number');
-    }
-  
-    return {
-      sum(...args) {
-        let result = number;
-  
-        for (const arg of args) {
-          result += arg;
-        }
-  
-        return result;
-      },
-      dif(...args) {
-        let result = number;
-  
-        for (const arg of args) {
-          result -= arg;
-        }
-  
-        return result;
-      },
-      div(...args) {
-        let result = number;
-  
-        for (const arg of args) {
-          if (arg === 0) {
-            throw new Error('division by 0');
-          }
-  
-          result /= arg;
-        }
-  
-        return result;
-      },
-      mul(...args) {
-        let result = number;
-  
-        for (const arg of args) {
-          result *= arg;
-        }
-  
-        return result;
-      },
-    };
+function calculator(number = 0) {
+  if (!Number.isFinite(number)) {
+    throw new Error('number is not a number');
   }
+
+  return {
+    sum(...args) {
+      let result = number;
+
+      for (const arg of args) {
+        result += arg;
+      }
+
+      return result;
+    },
+    dif(...args) {
+      let result = number;
+
+      for (const arg of args) {
+        result -= arg;
+      }
+
+      return result;
+    },
+    div(...args) {
+      let result = number;
+
+      for (const arg of args) {
+        if (arg === 0) {
+          throw new Error('division by 0');
+        }
+
+        result /= arg;
+      }
+
+      return result;
+    },
+    mul(...args) {
+      let result = number;
+
+      for (const arg of args) {
+        result *= arg;
+      }
+
+      return result;
+    },
+  };
+}
 
 /* При решении задач, постарайтесь использовать отладчик */
 
