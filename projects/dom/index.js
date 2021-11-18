@@ -76,17 +76,19 @@ function findAllPSiblings(where) {
 
    findError(document.body) // функция должна вернуть массив с элементами 'привет' и 'loftschool'
  */
-function findError(where) {
-  let result = [];
-
-  for (const child of where.childNodes) {
-    if (child.nodeType === 1) {
-      result = Array.from(child.textContent);
+   function findError(where) {
+    var result = [];
+  
+    for (const key of where.children) {
+      if (key.tagName!=='SCRIPT'){
+        result.push(key.textContent)
+      }  
     }
+    return result;
+  
+   
+  
   }
-
-  return result;
-}
 
 /*
  Задание 5:
@@ -141,7 +143,7 @@ function deleteTextNodesRecursive(where) {
  - количество элементов каждого класса
  - количество элементов каждого тега
  Для работы с классами рекомендуется использовать classList
- Постарайтесь не создавать глобальных переменных
+ Постарайтесь не создавать глобальных переменных  
 
  Пример:
    Для дерева <div class="some-class-1"><b>привет!</b> <b class="some-class-1 some-class-2">loftschool</b></div>
@@ -152,8 +154,46 @@ function deleteTextNodesRecursive(where) {
      texts: 3
    }
  */
-function collectDOMStat(root) {}
+   function collectDOMStat(root) {
 
+    let objCollect={
+      tags: {},
+      classes: {},
+      texts: 0,
+    }
+  function helpRec(root){
+    for (const key of root.childNodes) {
+      if(key.nodeType===3){
+        objCollect.texts++;
+        
+      }else if (key.nodeType===1){
+  
+        if (key.tagName in objCollect.tags) {
+          objCollect.tags[key.tagName]++;
+        } else {
+          objCollect.tags[key.tagName] = 1;
+        }
+        for (const nameClass of key.classList) {
+          
+          if (nameClass in objCollect.classes) {
+            objCollect.classes[nameClass]++;
+          } else {
+            objCollect.classes[nameClass] = 1;
+          }
+        }
+        
+        helpRec(key);
+      }
+      
+    
+    }
+    
+    helpRec(root);
+    return objCollect;
+  }
+
+  }
+    
 /*
  Задание 8 *:
 
