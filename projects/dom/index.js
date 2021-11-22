@@ -155,43 +155,39 @@ function deleteTextNodesRecursive(where) {
    }
  */
    function collectDOMStat(root) {
-
-    let objCollect={
+    const stat = {
       tags: {},
       classes: {},
       texts: 0,
-    }
-  function helpRec(root){
-    for (const key of root.childNodes) {
-      if(key.nodeType===3){
-        objCollect.texts++;
-        
-      }else if (key.nodeType===1){
+    };
   
-        if (key.tagName in objCollect.tags) {
-          objCollect.tags[key.tagName]++;
-        } else {
-          objCollect.tags[key.tagName] = 1;
-        }
-        for (const nameClass of key.classList) {
-          
-          if (nameClass in objCollect.classes) {
-            objCollect.classes[nameClass]++;
+    function scan(root) {
+      for (const child of root.childNodes) {
+        if (child.nodeType === Node.TEXT_NODE) {
+          stat.texts++;
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+          if (child.tagName in stat.tags) {
+            stat.tags[child.tagName]++;
           } else {
-            objCollect.classes[nameClass] = 1;
+            stat.tags[child.tagName] = 1;
           }
+  
+          for (const className of child.classList) {
+            if (className in stat.classes) {
+              stat.classes[className]++;
+            } else {
+              stat.classes[className] = 1;
+            }
+          }
+  
+          scan(child);
         }
-        
-        helpRec(key);
       }
-      
-    
     }
-    
-    helpRec(root);
-    return objCollect;
-  }
-
+  
+    scan(root);
+  
+    return stat;
   }
     
 /*
@@ -226,7 +222,21 @@ function deleteTextNodesRecursive(where) {
      nodes: [div]
    }
  */
-function observeChildNodes(where, fn) {}
+function observeChildNodes(where, fn) {function observeChildNodes(where, fn) {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        fn({
+          type: mutation.addedNodes.length ? 'insert' : 'remove',
+          nodes: [
+            ...(mutation.addedNodes.length ? mutation.addedNodes : mutation.removedNodes),
+          ],
+        });
+      }
+    });
+  });
+
+  observer.observe(where, { childList: true, subtree: true });}}
 
 export {
   createDivWithText,
